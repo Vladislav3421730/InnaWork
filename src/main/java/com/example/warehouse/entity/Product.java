@@ -22,6 +22,7 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
+    @Column(columnDefinition = "VARCHAR(500)")
     private String description;
 
     @NotNull(message = "Количество не может быть пустым")
