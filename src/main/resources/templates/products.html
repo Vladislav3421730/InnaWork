@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товары</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body class="bg-gray-100">
+
+<header class="bg-blue-500 text-white p-3">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/products" class="text-lg font-semibold">Главная</a>
+        <nav class="flex space-x-4 items-center">
+            <a sec:authorize="hasRole('ADMIN')" href="/users" class="hover:text-blue-300">Админ</a>
+            <a sec:authorize="hasRole('MANAGER')" href="/counterparties" class="hover:text-blue-300">Контрагенты</a>
+            <a sec:authorize="hasRole('MANAGER')" href="/products" class="hover:text-blue-300">Товары</a>
+            <a sec:authorize="hasRole('MANAGER')" href="/orders" class="hover:text-blue-300">Заказы</a>
+            <a href="/profile" class="hover:text-blue-300">Профиль</a>
+        </nav>
+    </div>
+</header>
+
+
+<main class="container mx-auto p-4 max-w-7xl">
+    <div class="mb-4 flex justify-between items-center">
+        <form action="/products" method="get" class="flex space-x-4">
+            <input type="text" name="search" class="px-3 py-2 border border-gray-300 rounded-lg"
+                   placeholder="Поиск">
+
+            <select name="sort" class="px-1 py-2 border border-gray-300 rounded-lg">
+                <option selected>Сортировка</option>
+                <option value="name_asc">По имени (A-Z)</option>
+                <option value="name_desc">По имени (Z-A)</option>
+                <option value="price_asc">По цене (по возрастанию)</option>
+                <option value="price_desc">По цене (по убыванию)</option>
+            </select>
+
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Применить
+            </button>
+        </form>
+
+        <a href="/products/add" class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Добавить
+            товар</a>
+    </div>
+
+    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden border-collapse">
+        <thead>
+        <tr class="bg-gray-100">
+            <th class="py-2 px-4 text-left border-b border-gray-300">Название</th>
+            <th class="py-2 px-4 text-left border-b border-gray-300">Описание</th>
+            <th class="py-2 px-4 text-left border-b border-gray-300">Количество</th>
+            <th class="py-2 px-4 text-left border-b border-gray-300">Цена</th>
+            <th class="py-2 px-4 text-left border-b border-gray-300">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}" class="hover:bg-gray-50">
+            <td class="py-2 px-4 border-b border-gray-300" th:text="${product.name}"></td>
+            <td class="py-2 px-4 border-b border-gray-300" th:text="${product.description}"></td>
+            <td class="py-2 px-4 border-b border-gray-300" th:text="${product.quantity}"></td>
+            <td class="py-2 px-4 border-b border-gray-300" th:text="${product.price}"></td>
+            <td class="py-2 px-4 border-b border-gray-300">
+                <a th:href="@{'/products/edit/'+${product.id}}"
+                   class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Редактировать</a>
+                <button type="button" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 ml-2"
+                        data-toggle="modal" data-target="#deleteModal" th:data-id="${product.id}">
+                    Удалить
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Подтверждение удаления</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить этот товар?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+
+                <form id="deleteForm" method="post" style="display: inline;">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button id="confirmDelete" type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+<script>
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var productId = button.data('id');
+        var modal = $(this);
+        modal.find('#deleteForm').attr('action', '/products/delete/' + productId);
+    });
+</script>
+
+</body>
+</html>

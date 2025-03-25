@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказы</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-gray-100">
+
+<header class="bg-blue-500 text-white p-3">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/products" class="text-lg font-semibold">Главная</a>
+        <nav class="flex space-x-4 items-center">
+            <a sec:authorize="hasRole('ADMIN')" href="/users" class="hover:text-blue-300">Админ</a>
+            <a sec:authorize="hasRole('MANAGER')" href="/counterparties" class="hover:text-blue-300">Контрагенты</a>
+            <a sec:authorize="hasRole('MANAGER')" href="/products" class="hover:text-blue-300">Товары</a>
+            <a sec:authorize="hasRole('MANAGER')" href="/orders" class="hover:text-blue-300">Заказы</a>
+            <a href="/profile" class="hover:text-blue-300">Профиль</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container mx-auto p-4 max-w-7xl">
+    <div class="mb-4 flex justify-between items-center">
+        <h2 class="text-2xl font-semibold">Список заказов</h2>
+        <div>
+            <a href="/analytics/all" class="inline-block bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600">Аналитика
+                продаж</a>
+            <a href="/orders/add" class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Добавить
+                заказ</a>
+        </div>
+    </div>
+
+
+    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden border-collapse">
+        <thead>
+        <tr class="bg-gray-100">
+            <th class="py-2 px-4 text-left border-b border-gray-300">ID заказа</th>
+            <th class="py-2 px-4 text-left border-b border-gray-300">Покупатель</th>
+            <th class="py-2 px-4 text-left border-b border-gray-300">Дата заказа</th>
+            <th class="py-2 px-4 text-left border-b border-gray-300">Сумма</th>
+            <th class="py-2 px-4 text-left border-b border-gray-300">Статус</th>
+            <th class="py-2 px-4 text-left border-b border-gray-300">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}" class="hover:bg-gray-50">
+            <td class="py-2 px-4 border-b border-gray-300" th:text="${order.id}"></td>
+            <td class="py-2 px-4 border-b border-gray-300" th:text="${order.customer.name}"></td>
+            <td class="py-2 px-4 border-b border-gray-300"
+                th:text="${#temporals.format(order.orderDate, 'dd.MM.yyyy HH:mm')}"></td>
+            <td class="py-2 px-4 border-b border-gray-300" th:text="${order.price}"></td>
+            <td class="py-2 px-4 border-b border-gray-300" th:text="${order.status.getName()}"></td>
+            <td class="py-3 px-4 border-b border-gray-300">
+                <a th:href="@{'/orders/'+${order.id}}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Подробнее</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
+

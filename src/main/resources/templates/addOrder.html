@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить заказ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<header class="bg-blue-500 text-white p-3">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/products" class="text-lg font-semibold">Главная</a>
+        <nav class="flex space-x-4 items-center">
+            <a sec:authorize="hasRole('ADMIN')" href="/users" class="hover:text-blue-300">Админ</a>
+            <a sec:authorize="hasRole('MANAGER')" href="/counterparties" class="hover:text-blue-300">Контрагенты</a>
+            <a sec:authorize="hasRole('MANAGER')" href="/products" class="hover:text-blue-300">Товары</a>
+            <a sec:authorize="hasRole('MANAGER')" href="/orders" class="hover:text-blue-300">Заказы</a>
+            <a href="/profile" class="hover:text-blue-300">Профиль</a>
+        </nav>
+    </div>
+</header>
+
+<main class="max-w-2xl mt-6 mx-auto bg-white p-6 rounded-lg shadow-lg">
+    <h2 class="text-xl font-bold mb-4">Добавить заказ</h2>
+
+    <form action="/orders/add" method="post" class="space-y-4">
+        <div>
+            <label class="block text-sm font-medium">Покупатель:</label>
+            <select name="customerId" class="w-full border p-2 rounded">
+                <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}"></option>
+            </select>
+        </div>
+
+        <div id="itemsContainer">
+            <div class="item flex space-x-2 mb-2">
+                <select name="productIds" class="productSelect w-full border p-2 rounded">
+                    <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+                </select>
+                <input type="number" name="quantities" min="1" value="1" class="quantity w-16 border p-2 rounded">
+                <button type="button" class="inline removeItem bg-red-500 text-white p-3 rounded">-</button>
+            </div>
+        </div>
+
+        <button type="button" id="addItem" class="bg-blue-500 text-white px-4 py-2 rounded">+ Добавить товар</button>
+        <button type="submit" class="w-full bg-green-500 text-white py-2 rounded">Отправить заказ</button>
+    </form>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const itemsContainer = document.getElementById("itemsContainer");
+        const addItemButton = document.getElementById("addItem");
+
+        function addItem() {
+            const div = document.createElement("div");
+            div.className = "item flex space-x-2 mb-2";
+            div.innerHTML = `
+                    <select name="productIds" class="productSelect w-full border p-3 rounded">
+                        ${document.querySelector(".productSelect").innerHTML}
+                    </select>
+                    <input type="number" name="quantities" min="1" value="1" class="quantity w-16 border p-2 rounded">
+                    <button type="button" class="removeItem bg-red-500 text-white p-3 rounded">-</button>
+                `;
+
+            div.querySelector(".removeItem").addEventListener("click", () => div.remove());
+            itemsContainer.appendChild(div);
+        }
+
+        addItemButton.addEventListener("click", addItem);
+    });
+</script>
+
+</body>
+</html>
