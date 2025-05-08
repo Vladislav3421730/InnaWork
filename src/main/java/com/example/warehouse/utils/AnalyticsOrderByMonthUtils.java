@@ -16,7 +16,7 @@ public class AnalyticsOrderByMonthUtils {
 
     public static Map<String, Double> getSumSalesByMonth(List<Order> orders) {
         Map<String, Double> salesByMonth = orders.stream()
-                .filter(x -> x.getOrderDate().getYear() == Year.now().getValue() - 1)
+                .filter(x -> x.getOrderDate().getYear() == Year.now().getValue())
                 .collect(Collectors.groupingBy(order -> order.getOrderDate().getMonth().toString(),
                         Collectors.summingDouble(Order::getPrice)));
         List<String> months = Arrays.stream(Month.values()).map(Enum::toString).toList();
@@ -29,7 +29,7 @@ public class AnalyticsOrderByMonthUtils {
 
     public static Map<String, Double> getCountSalesByMonth(List<Order> orders) {
         Map<String, Long> salesByMonth = orders.stream()
-                .filter(x -> x.getOrderDate().getYear() == Year.now().getValue() - 1)
+                .filter(x -> x.getOrderDate().getYear() == Year.now().getValue())
                 .collect(Collectors.groupingBy(order -> order.getOrderDate().getMonth().toString(),
                         Collectors.counting()));
         List<String> months = Arrays.stream(Month.values()).map(Enum::toString).toList();
@@ -42,7 +42,7 @@ public class AnalyticsOrderByMonthUtils {
 
     public static Map<String, Double> getAverageCheckByMonth(List<Order> orders) {
         Map<String, Double> salesByMonth = orders.stream()
-                .filter(x -> x.getOrderDate().getYear() == Year.now().getValue() - 1)
+                .filter(x -> x.getOrderDate().getYear() == Year.now().getValue())
                 .collect(Collectors.groupingBy(order -> order.getOrderDate().getMonth().toString(),
                         Collectors.averagingDouble(Order::getPrice)));
         List<String> months = Arrays.stream(Month.values()).map(Enum::toString).toList();

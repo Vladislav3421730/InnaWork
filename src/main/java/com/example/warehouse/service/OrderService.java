@@ -45,6 +45,10 @@ public class OrderService {
                     .orElseThrow(() -> new ProductNotFoundException("Товар с  не найден"));
 
             int quantity = quantities.get(i);
+
+            product.setQuantity(product.getQuantity() - quantity);
+            productRepository.save(product);
+
             double itemPrice = product.getPrice() * quantity;
             totalPrice += itemPrice;
 

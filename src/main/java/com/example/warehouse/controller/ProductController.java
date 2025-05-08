@@ -4,12 +4,10 @@ import com.example.warehouse.entity.Product;
 import com.example.warehouse.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Controller
@@ -32,11 +30,12 @@ public class ProductController {
     @GetMapping("/add")
     public String showAddProductForm(Model model) {
         model.addAttribute("product", new Product());
+        model.addAttribute("edit", false);
         return "addProduct";
     }
 
     @PostMapping("/add")
-    public String addProduct(@Valid Product product, BindingResult result, Model model) {
+    public String addProduct(@Valid Product product, BindingResult result) {
         if (result.hasErrors()) {
             return "addProduct";
         }
@@ -48,6 +47,7 @@ public class ProductController {
     public String getProductEditPage(@PathVariable Long productId, Model model) {
         Product product = productService.findById(productId);
         model.addAttribute("product", product);
+        model.addAttribute("edit", true);
         return "addProduct";
     }
 

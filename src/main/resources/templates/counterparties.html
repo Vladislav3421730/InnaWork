@@ -50,11 +50,11 @@
     <tbody>
     <tr th:each="customer : ${customers}" class="hover:bg-gray-50">
       <td class="py-3 px-4 border-b" th:text="${customer.id}"></td>
-      <td class="py-3 px-4 border-b" th:text="${customer.name}"></td>
+      <td class="py-3 px-4 border-b max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap" th:text="${customer.name}"></td>
       <td class="py-3 px-4 border-b" th:text="${customer.email}"></td>
       <td class="py-3 px-4 border-b" th:text="${customer.phone}"></td>
-      <td class="py-3 px-4 border-b" th:text="${customer.address}"></td>
-      <td class="py-3 px-4 border-b flex space-x-2">
+      <td class="py-3 px-4 border-b max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap" th:text="${customer.address}"></td>
+      <td class="py-3 px-4 border-b whitespace-nowrap flex space-x-2 items-center">
         <a th:href="@{'/counterparties/edit/'+${customer.id}}"
            class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Редактировать</a>
         <a th:href="@{'/analytics/'+${customer.id}}"

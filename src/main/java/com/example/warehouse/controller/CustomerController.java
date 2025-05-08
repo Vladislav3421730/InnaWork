@@ -4,6 +4,7 @@ import com.example.warehouse.entity.Customer;
 import com.example.warehouse.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/counterparties")
 @RequiredArgsConstructor
+@Slf4j
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -29,6 +31,7 @@ public class CustomerController {
     @GetMapping("/add")
     public String getAddCustomerPage(Model model) {
         model.addAttribute("customer", new Customer());
+        model.addAttribute("edit", false);
         return "addCounterparty";
     }
 
@@ -45,6 +48,7 @@ public class CustomerController {
     public String getEditPage(@PathVariable Long customerId, Model model) {
         Customer customer = customerService.findById(customerId);
         model.addAttribute("customer", customer);
+        model.addAttribute("edit", true);
         return "addCounterparty";
     }
 }

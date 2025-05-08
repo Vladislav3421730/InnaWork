@@ -37,6 +37,7 @@ public class QuickChartGenerator {
 
         try {
             String encodedData = URLEncoder.encode(chartData, StandardCharsets.UTF_8);
+            log.info(encodedData);
             return "https://quickchart.io/chart?c=" + encodedData;
         } catch (Exception e) {
             e.printStackTrace();

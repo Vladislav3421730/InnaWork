@@ -56,6 +56,7 @@
             <td class="py-2 px-4 border-b border-gray-300" th:text="${order.status.getName()}"></td>
             <td class="py-3 px-4 border-b border-gray-300">
                 <a th:href="@{'/orders/'+${order.id}}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Подробнее</a>
+                <a th:href="@{'/orders/download/'+${order.id}}" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Отчёт</a>
             </td>
         </tr>
         </tbody>

@@ -32,10 +32,7 @@ VALUES (1, 1),
        (10, 1);
 
 INSERT INTO product (id, name, description, quantity, price)
-VALUES (1, 'Lenovo Laptop', 'Gaming laptop with a powerful graphics card', 10, 75000),
-       (2, 'Samsung Smartphone', 'Flagship smartphone with AMOLED display', 25, 60000),
-       (3, 'Apple Tablet', 'iPad with Retina display', 15, 50000),
-       (4, 'LG Monitor', 'IPS monitor with a 144 Hz refresh rate', 20, 30000),
+VALUES
        (5, 'Logitech Keyboard', 'Mechanical keyboard with backlighting', 30, 7000),
        (6, 'Razer Mouse', 'Gaming mouse with 12 programmable buttons', 40, 8000),
        (7, 'Sony Headphones', 'Wireless headphones with noise cancellation', 35, 15000),
